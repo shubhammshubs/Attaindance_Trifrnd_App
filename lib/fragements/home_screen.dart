@@ -132,7 +132,7 @@ class _HomescreenState extends State<Homescreen> {
                             color: Colors.black54
                           ),),
 
-                          Text(widget.checkInTime,
+                          Text((widget.checkInTime ?? "--/--"),
                             style: TextStyle(
                                 fontFamily: "NexaBoald",
                                 fontSize: screenWidth / 18,
@@ -154,7 +154,7 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                           ),
                           Text(
-                            widget.checkOutTime,
+                            widget.checkOutTime ?? "--/--",
                             style: TextStyle(
                               fontFamily: "NexaBoald",
                               fontSize: screenWidth / 18,

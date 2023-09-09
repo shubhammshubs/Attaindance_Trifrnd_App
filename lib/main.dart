@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:month_year_picker/month_year_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'HomePage.dart';
@@ -26,7 +27,11 @@ class LoginApp extends StatelessWidget {
         // Other theme properties...
       ),
       home: LoginPage(),
+      localizationsDelegates: const [
+        MonthYearPickerLocalizations.delegate
+      ],
     );
+
   }
 
 

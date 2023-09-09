@@ -114,8 +114,8 @@ class _HomePageState extends State<HomePage> {
   }
   // ----------------------------------Users Attendance fetchin using API = checkin---------------------------------
   Future<void> markAttendance() async {
-    // String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    String currentDate = '2023-09-10'; // Change this to the desired date
+    String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    // String currentDate = '2023-06-03'; // Change this to the desired date
     // Get the current time and format it as HH:mm:ss
     String currentTime = DateFormat('HH:mm').format(DateTime.now());
 
@@ -156,9 +156,9 @@ class _HomePageState extends State<HomePage> {
   }
   // ----------------------------------Users Attendance fetchin using API = checkout---------------------------------
   Future<void> markCheckOut() async {
-    // String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
     String currentTime = DateFormat('HH:mm').format(DateTime.now());
-    String currentDate = '2023-09-10'; // Change this to the desired date
+    // String currentDate = '2023-06-03'; // Change this to the desired date
 
 
     final url = Uri.parse('https://api.trifrnd.com/portal/attend.php?apicall=checkout');
