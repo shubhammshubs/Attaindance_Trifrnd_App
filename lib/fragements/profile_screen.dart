@@ -1,5 +1,6 @@
 import 'package:attaindance_user_aug/User_Session/User.dart';
 import 'package:attaindance_user_aug/main.dart';
+import 'package:attaindance_user_aug/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,8 +22,6 @@ class _Profilescreen extends State<Profilescreen> {
   double screenHeight = 0;
   double screenWidth = 0;
   Color primary = const Color(0xffeef444c);
-
-
 
 
 
@@ -54,6 +53,7 @@ class _Profilescreen extends State<Profilescreen> {
               fit: BoxFit.cover,
             ),
           ),
+
           // -------------------------This is code for Profile Photo circle--------------------------------
           Container(
             margin: const EdgeInsets.only(top: 132,right: 1,left: 260),
@@ -137,34 +137,12 @@ class _Profilescreen extends State<Profilescreen> {
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        // Row(
-                                        //   children: [
-                                        //     SizedBox(width: 1), // Add some spacing between the icon and text
-                                        //     Icon(
-                                        //       Icons.person, // You can use any desired icon from the Icons class
-                                        //       color: primary,
-                                        //       size: screenWidth / 20,
-                                        //
-                                        //     ),
-                                        //     SizedBox(width: 4), // Add some spacing between the icon and text
-                                        //     Text("This is a layout Demo pAge",
-                                        //       style: TextStyle(
-                                        //           fontFamily: "NexaRegular",
-                                        //           fontSize: screenWidth / 20,
-                                        //           color: Colors.red
-                                        //       ),
-                                        //     ),
-                                        //   ],
-                                        // ),
+
                                         Row(
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-                                            // Icon(
-                                            //   Icons.person, // You can use any desired icon from the Icons class
-                                            //   color: primary,
-                                            //   size: screenWidth / 20,
-                                            // ),
+
                                             SizedBox(width: 8), // Add some spacing between the icon and text
                                             RichText(text: TextSpan(
 
@@ -271,7 +249,7 @@ class _Profilescreen extends State<Profilescreen> {
                                 return Container(
                                   // color: widget.outerColor ?? Colors.green, // Set the custom background color here
                                   child: SlideAction(
-                                    text: "Slide to Log Out",
+                                    text: "Slide to Log Out ",
                                     textStyle: TextStyle(
                                       color: Colors.black54,
                                       fontSize: screenWidth / 20,
@@ -281,8 +259,9 @@ class _Profilescreen extends State<Profilescreen> {
                                     innerColor: primary,
                                     key: key,
                                     onSubmit: () async {
-                                      final prefs = await SharedPreferences.getInstance();
-                                      await prefs.remove('userName');
+                                      final SharedPreferences sharedPreferences =
+                                      await SharedPreferences.getInstance();
+                                      await sharedPreferences.remove('mobile');
                                       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginApp()));
                                       key.currentState!.reset(
                                       );
@@ -290,196 +269,12 @@ class _Profilescreen extends State<Profilescreen> {
                                   ),
                                 );
                               }),
-                            )
-                            ,
-
+                            ),
                           ],
                         ),
                       ),
                     ],
-                  )
-                  ,
-
-
-
-
-
-                  // Container(
-                  //   margin: const EdgeInsets.only(top: 270),
-                  //   height: 200,
-                  //   width: 360,
-                  //   decoration: const BoxDecoration(
-                  //     color: Colors.white,
-                  //     boxShadow: [
-                  //       BoxShadow(
-                  //           color: Colors.black26,
-                  //           blurRadius: 10,
-                  //           offset: Offset(2, 2)
-                  //       ),
-                  //     ],
-                  //     borderRadius: BorderRadius.all(Radius.circular(20)),
-                  //   ),
-                  //   child: Row (
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     crossAxisAlignment: CrossAxisAlignment.center,
-                  //     children: [
-                  //       Expanded(
-                  //         child: Column(
-                  //           mainAxisAlignment: MainAxisAlignment.center,
-                  //           crossAxisAlignment: CrossAxisAlignment.start,
-                  //           children: [
-                  //             Row(
-                  //               children: [
-                  //                 SizedBox(width: 1), // Add some spacing between the icon and text
-                  //                 Icon(
-                  //                   Icons.person, // You can use any desired icon from the Icons class
-                  //                   color: primary,
-                  //                   size: screenWidth / 20,
-                  //
-                  //                 ),
-                  //                 SizedBox(width: 4), // Add some spacing between the icon and text
-                  //                 Text("This is a layout Demo pAge",
-                  //                   style: TextStyle(
-                  //                       fontFamily: "NexaRegular",
-                  //                       fontSize: screenWidth / 20,
-                  //                       color: Colors.red
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //             Row(
-                  //               mainAxisAlignment: MainAxisAlignment.center,
-                  //               crossAxisAlignment: CrossAxisAlignment.center,
-                  //               children: [
-                  //                 // Icon(
-                  //                 //   Icons.person, // You can use any desired icon from the Icons class
-                  //                 //   color: primary,
-                  //                 //   size: screenWidth / 20,
-                  //                 // ),
-                  //                 SizedBox(width: 8), // Add some spacing between the icon and text
-                  //                 RichText(text: TextSpan(
-                  //
-                  //                     text: "${widget.userInfo!.fname} ${widget.userInfo!.lname}",
-                  //                     style: TextStyle(
-                  //                       color: primary,
-                  //                       fontSize: screenWidth / 16,
-                  //                     )
-                  //                 ))
-                  //               ],
-                  //             ),
-                  //             SizedBox(height: 10,),
-                  //
-                  //             Row(
-                  //               children: [
-                  //                 SizedBox(width: 1), // Add some spacing between the icon and text
-                  //                 Icon(
-                  //                   Icons.person, // You can use any desired icon from the Icons class
-                  //                   color: primary,
-                  //                   size: screenWidth / 20,
-                  //
-                  //                 ),
-                  //                 SizedBox(width: 4), // Add some spacing between the icon and text
-                  //                 Text(" Employee ID: ${widget.userInfo!.empId}",
-                  //                   style: TextStyle(
-                  //                       fontFamily: "NexaRegular",
-                  //                       fontSize: screenWidth / 20,
-                  //                       color: Colors.black54
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //             Row(
-                  //               children: [
-                  //                 SizedBox(width: 1), // Add some spacing between the icon and text
-                  //                 Icon(
-                  //                   Icons.email, // You can use any desired icon from the Icons class
-                  //                   color: primary,
-                  //                   size: screenWidth / 20,
-                  //                 ),
-                  //                 SizedBox(width: 4), // Add some spacing between the icon and text
-                  //
-                  //                 Flexible(
-                  //                   child: Text(" Email: ${widget.userInfo!.email}",
-                  //                     style: TextStyle(
-                  //                         fontFamily: "NexaRegular",
-                  //                         fontSize: screenWidth / 20,
-                  //                         color: Colors.black54
-                  //                     ),
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //             Row(
-                  //               children: [
-                  //                 SizedBox(width: 1), // Add some spacing between the icon and text
-                  //
-                  //                 Icon(
-                  //                   Icons.mobile_friendly_sharp, // You can use any desired icon from the Icons class
-                  //                   color: primary,
-                  //                   size: screenWidth / 20,
-                  //                 ),
-                  //                 SizedBox(width: 4), // Add some spacing between the icon and text
-                  //                 Text(" Mobile: ${widget.userInfo!.mobile}",
-                  //                   style: TextStyle(
-                  //                       fontFamily: "NexaRegular",
-                  //                       fontSize: screenWidth / 20,
-                  //                       color: Colors.black54
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //             Row(
-                  //               children: [
-                  //                 SizedBox(width: 2), // Add some spacing between the icon and text
-                  //                 Icon(
-                  //                   Icons.important_devices, // You can use any desired icon from the Icons class
-                  //                   color: primary,
-                  //                   size: screenWidth / 20,
-                  //                 ),
-                  //                 SizedBox(width: 3), // Add some spacing between the icon and text
-                  //                 Text(" Department: ${widget.userInfo!.departmentName}",
-                  //                   style: TextStyle(
-                  //                       fontFamily: "NexaRegular",
-                  //                       fontSize: screenWidth / 20,
-                  //                       color: Colors.black54
-                  //                   ),
-                  //                 ),
-                  //               ],
-                  //             ),
-                  //           ],
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
-
-                  // Container(
-                  //   margin: const EdgeInsets.only(top: 100),
-                  //   child: Builder(builder: (context) {
-                  //     final GlobalKey<SlideActionState> key = GlobalKey();
-                  //     return Container(
-                  //       // color: widget.outerColor ?? Colors.green, // Set the custom background color here
-                  //       child: SlideAction(
-                  //         text: "Slide to Log Out",
-                  //         textStyle: TextStyle(
-                  //           color: Colors.black54,
-                  //           fontSize: screenWidth / 20,
-                  //           fontFamily: "NexaRegular",
-                  //         ),
-                  //         outerColor: Colors.white,
-                  //         innerColor: primary,
-                  //         key: key,
-                  //         onSubmit: () async {
-                  //           final prefs = await SharedPreferences.getInstance();
-                  //           await prefs.remove('userName');
-                  //           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginApp()));
-                  //           key.currentState!.reset(
-                  //           );
-                  //         },
-                  //       ),
-                  //     );
-                  //   }),
-                  // )
+                  ),
                 ],
               ),
             ),

@@ -22,4 +22,18 @@ class User {
     this.attendanceData, // Initialize attendance data to null
 
   });
+
+
+  // Factory constructor to create a User object from a JSON map
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'] ?? '',
+      fname: json['fname'] ?? '',
+      lname: json['lname'] ?? '',
+      empId: json['EmpId'] ?? '',
+      email: json['email'] ?? '',
+      mobile: json['mobile'] ?? '',
+      departmentName: json['department_name'] ?? '',
+    );
+  }
 }

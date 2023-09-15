@@ -1,74 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-//
-// import '../User_Session/display_attaindance.dart';
-// import '../services/api_service_display.dart';
-// class Attaindencescreen extends StatefulWidget {
-//   final String mobileNumber;
-//
-//   Attaindencescreen({required this.mobileNumber});
-//
-//   @override
-//   State<Attaindencescreen> createState() => _AttaindencescreenState();
-// }
-//
-// class _AttaindencescreenState extends State<Attaindencescreen> {
-//   List<display_attaindance> attendanceData = [];
-//
-//   void _fetchAttendanceData() async {
-//     final mobile = widget.mobileNumber; // Use the provided mobile number directly
-//     try {
-//       final data = await ApiService.fetchAttendanceByMobile(mobile);
-//       if (data != null) {
-//         setState(() {
-//           attendanceData = data;
-//         });
-//       } else {
-//         // Handle the case where the API response is null
-//         print('API response is null');
-//       }
-//     } catch (e) {
-//       print('Error fetching data: $e');
-//     }
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Attendance Records'),
-//       ),
-//       body: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           children: [
-//             ElevatedButton(
-//               onPressed: _fetchAttendanceData,
-//               child: Text('Fetch Attendance'),
-//             ),
-//             Expanded(
-//               child: ListView.builder(
-//                 itemCount: attendanceData.length,
-//                 itemBuilder: (context, index) {
-//                   final user = attendanceData.reversed.toList()[index];
-//                   return ListTile(
-//                     title: Text(user.date),
-//                     subtitle: Text('In: ${user.intime}, Out: ${user.outtime ?? 'Not Available'}'),
-//                   );
-//                 },
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -80,6 +9,7 @@ import 'package:month_year_picker/month_year_picker.dart';
 
 class Attaindencescreen extends StatefulWidget {
   final String mobileNumber;
+
 
   Attaindencescreen({required this.mobileNumber});
 
@@ -101,7 +31,7 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
     // Start fetching attendance data when the screen initializes
     _fetchAttendanceData();
     // Set up a timer to fetch data every 1 minutes
-    _timer = Timer.periodic(Duration(minutes: 1), (Timer timer) {
+    _timer = Timer.periodic(Duration(seconds: 30), (Timer timer) {
       _fetchAttendanceData();
     });
 
@@ -140,9 +70,6 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
     screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Attendance Records'),
-      // ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -162,6 +89,8 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
               ),
               Stack(
                 children: [
+                  //  -------------------------------code for Month show--------------------------------
+
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: const EdgeInsets.only(top: 32),
@@ -194,6 +123,8 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
                                        primary: primary,
                                     secondary: primary,
                                     onSecondary: Colors.white,
+
+
                                   ),
                                   textButtonTheme: TextButtonThemeData(
                                     style: TextButton.styleFrom(
@@ -202,7 +133,8 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
                                   ),
                                   textTheme: const TextTheme(
                                     headline4: TextStyle(
-                                      fontFamily: "NexaBold"
+                                      fontFamily: "NexaBold",
+
                                     ),
                                   )
                                 ),
@@ -254,8 +186,11 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+
                             Expanded(
-                                child: Container(
+                              //  -------------------------------code for Month Record Display--------------------------------
+
+                            child: Container(
                                   margin: EdgeInsets.only(),
                                   decoration: BoxDecoration(
                                     color: primary,
@@ -275,7 +210,9 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
                                 )),
                             Expanded(
                               child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                //  -------------------------------code for CheckIn Record Display--------------------------------
+
+                              mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Text("Check In",
@@ -297,7 +234,9 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
                             ),
                             Expanded(
                                 child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  //  -------------------------------code for CheckOut Record Display--------------------------------
+
+                                mainAxisAlignment: MainAxisAlignment.center,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text("Check Out",
@@ -323,22 +262,9 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
                     else{
                       return const SizedBox();
                     }
-
                   }
                 ),
               ),
-              // Expanded(
-              //   child: ListView.builder(
-              //     itemCount: attendanceData.length,
-              //     itemBuilder: (context, index) {
-              //       final user = attendanceData.reversed.toList()[index];
-              //       return ListTile(
-              //         title: Text(user.date),
-              //         subtitle: Text('In: ${user.intime}, Out: ${user.outtime ?? 'Not Available'}'),
-              //       );
-              //     },
-              //   ),
-              // ),
             ],
           ),
         ),
@@ -346,3 +272,18 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
     );
   }
 }
+
+
+
+// Expanded(
+//   child: ListView.builder(
+//     itemCount: attendanceData.length,
+//     itemBuilder: (context, index) {
+//       final user = attendanceData.reversed.toList()[index];
+//       return ListTile(
+//         title: Text(user.date),
+//         subtitle: Text('In: ${user.intime}, Out: ${user.outtime ?? 'Not Available'}'),
+//       );
+//     },
+//   ),
+// ),

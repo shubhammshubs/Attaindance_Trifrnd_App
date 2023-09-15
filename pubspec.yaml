@@ -44,6 +44,7 @@ dependencies:
   flutter_slidable: ^0.6.0
   slide_to_act: any
   month_year_picker: ^0.3.0+1
+  get: ^4.6.6
 
 
 dev_dependencies:
@@ -64,8 +65,10 @@ dev_dependencies:
 flutter:
   assets:
     - assets/images/CoverPage.jpg
-#    - assets/images/cover1.jpg
     - assets/images/
+    - assets/images/cover1.jpg
+    - assets/images/black_cover.jpg
+    - assets/images/jpg_logo.jpg
 
 
   # The following line ensures that the Material Icons font is

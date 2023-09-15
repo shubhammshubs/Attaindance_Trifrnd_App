@@ -112,6 +112,8 @@ class _HomePageState extends State<HomePage> {
     fetchUsers();
     super.initState();
   }
+
+
   // ----------------------------------Users Attendance fetchin using API = checkin---------------------------------
   Future<void> markAttendance() async {
     String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -154,6 +156,8 @@ class _HomePageState extends State<HomePage> {
       ));
     });
   }
+
+
   // ----------------------------------Users Attendance fetchin using API = checkout---------------------------------
   Future<void> markCheckOut() async {
     String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
@@ -225,6 +229,7 @@ class _HomePageState extends State<HomePage> {
               markCheckOut: markCheckOut,
               checkInTime: intime, // Pass the check-in time
               checkOutTime: checkOutTime, // Pass the check-out time
+              mobileNumber: widget.mobileNumber,
 
             ),
             Profilescreen(userInfo: userInfo),
