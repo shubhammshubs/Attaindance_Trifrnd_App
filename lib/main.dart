@@ -15,6 +15,10 @@ import 'package:get/get_core/src/get_main.dart';
   void main() {
     runApp(GetMaterialApp(
       home: LoginApp(),
+      localizationsDelegates: const [
+        MonthYearPickerLocalizations.delegate,
+        // Other localizations delegates as needed...
+      ],
 
     ));
 
@@ -26,6 +30,7 @@ import 'package:get/get_core/src/get_main.dart';
 
     @override
     Widget build(BuildContext context) {
+
       return MaterialApp(
         title: 'Login App1',
         theme: ThemeData(
@@ -33,12 +38,16 @@ import 'package:get/get_core/src/get_main.dart';
           hintColor: Colors.blue, // Set your desired accent color here
           // Other theme properties...
         ),
+        // localizationsDelegates: const [
+        //   MonthYearPickerLocalizations.delegate,
+        //   // Other localizations delegates as needed...
+        // ],
         home:
         SplashScreen(),
-        // LoginPage(),
-        localizationsDelegates: const [
-          MonthYearPickerLocalizations.delegate
-        ],
+        // // LoginPage(),
+        // localizationsDelegates: const [
+        //   MonthYearPickerLocalizations.delegate
+        // ],
       );
 
     }
@@ -143,81 +152,83 @@ import 'package:get/get_core/src/get_main.dart';
         body: Center(
           child: Padding(
             padding: EdgeInsets.all(16.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // SizedBox(height: 1,),
-                Container(
-                  // height: 250, // Fixed height for the cover page
-                  // decoration: BoxDecoration(
-                  //   color: Colors.white,
-                  //   boxShadow: [
-                  //     BoxShadow(
-                  //       color: Colors.black26,
-                  //       blurRadius: 20,
-                  //       offset: Offset(2, 2),
-                  //     )
-                  //   ],
-                  //   borderRadius: BorderRadius.all(Radius.circular(20)),
-                  //
-                  // ),
-                  child: Image.asset(
-                    'assets/images/jpg_logo_crop.jpg',
-                    fit: BoxFit.fitHeight,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // SizedBox(height: 1,),
+                  Container(
+                    // height: 250, // Fixed height for the cover page
+                    // decoration: BoxDecoration(
+                    //   color: Colors.white,
+                    //   boxShadow: [
+                    //     BoxShadow(
+                    //       color: Colors.black26,
+                    //       blurRadius: 20,
+                    //       offset: Offset(2, 2),
+                    //     )
+                    //   ],
+                    //   borderRadius: BorderRadius.all(Radius.circular(20)),
+                    //
+                    // ),
+                    child: Image.asset(
+                      'assets/images/jpg_logo_crop.jpg',
+                      fit: BoxFit.fitHeight,
 
-                  ),
-                ),
-                TextField(
-                  controller: _mobileController,
-
-                  decoration: InputDecoration(labelText: 'Mobile Number',
-
-                      prefixIcon: Icon(Icons.mobile_friendly_sharp)),
-
-                  keyboardType: TextInputType.phone,
-
-                ),
-                SizedBox(height: 16),
-                TextField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'Password',
-                      prefixIcon: Icon(Icons.password_outlined),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
-                        child: Icon(
-                            _isPasswordVisible ? Icons.visibility : Icons.visibility_off
-                        ),
-                      )    // This Widget is for password Visibility
-                  ),
-                  obscureText: _isPasswordVisible,
-                ),
-                SizedBox(height: 32),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _login,
-                  style: const ButtonStyle(
-                    backgroundColor: MaterialStatePropertyAll<Color>(Colors.redAccent
                     ),
                   ),
-                  child: _isLoading
+                  TextField(
+                    controller: _mobileController,
 
-                      ? CircularProgressIndicator()  // Show loading indicator
-                      : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.login),
-                      SizedBox(width: 8),
-                      Text('Login'),
+                    decoration: InputDecoration(labelText: 'Mobile Number',
 
+                        prefixIcon: Icon(Icons.mobile_friendly_sharp)),
 
-                    ],
+                    keyboardType: TextInputType.phone,
+
                   ),
-                )
+                  SizedBox(height: 16),
+                  TextField(
+                    controller: _passwordController,
+                    decoration: InputDecoration(labelText: 'Password',
+                        prefixIcon: Icon(Icons.password_outlined),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                          child: Icon(
+                              _isPasswordVisible ? Icons.visibility : Icons.visibility_off
+                          ),
+                        )    // This Widget is for password Visibility
+                    ),
+                    obscureText: _isPasswordVisible,
+                  ),
+                  SizedBox(height: 32),
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _login,
+                    style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll<Color>(Colors.redAccent
+                      ),
+                    ),
+                    child: _isLoading
 
-              ],
+                        ? CircularProgressIndicator()  // Show loading indicator
+                        : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.login),
+                        SizedBox(width: 8),
+                        Text('Login'),
+
+
+                      ],
+                    ),
+                  )
+
+                ],
+              ),
             ),
           ),
         ),

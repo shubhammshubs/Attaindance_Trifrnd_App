@@ -56,7 +56,7 @@ class _Profilescreen extends State<Profilescreen> {
 
           // -------------------------This is code for Profile Photo circle--------------------------------
           Container(
-            margin: const EdgeInsets.only(top: 132,right: 1,left: 260),
+            margin: const EdgeInsets.only(top: 132,right: 1,left: 200),
 
             child: const CircleAvatar(
               backgroundImage: AssetImage('assets/images/CoverPage.jpg'),

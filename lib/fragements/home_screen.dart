@@ -52,34 +52,105 @@ class _HomescreenState extends State<Homescreen> {
   String checkInTime = "--/--"; // Initialize with default values
   String checkOutTime = "--/--"; // Initialize with default values
   List<display_attaindance> attendanceData = [];
+  DateTime? checkInDateTime; // Store Check In time as DateTime
+  DateTime? checkOutDateTime; // Store Check Out time as DateTime
+  Timer? dataRefreshTimer;
 
 
+  // Load the button state from SharedPreferences
+  Future<void> loadButtonState() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isCheckingIn = prefs.getBool('isCheckingIn') ?? true;
+    });
+  }
+
+  // Save the button state to SharedPreferences
+  Future<void> saveButtonState() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isCheckingIn', isCheckingIn);
+  }
+
+  // Load the slider button interaction timestamp from SharedPreferences
+  Future<void> loadSliderButtonTimestamp() async {
+    final prefs = await SharedPreferences.getInstance();
+    final timestamp = prefs.getString('sliderButtonTimestamp');
+    if (timestamp != null) {
+      final lastInteraction = DateTime.parse(timestamp);
+      final currentTime = DateTime.now();
+      final resetDuration = const Duration(hours: 24); // Change this to your desired reset period
+
+      if (currentTime.difference(lastInteraction) >= resetDuration) {
+        // Reset the button state if needed
+        setState(() {
+          isCheckingIn = true; // Reset to Check In
+        });
+      }
+    }
+  }
+
+  // Save the slider button interaction timestamp to SharedPreferences
+  Future<void> saveSliderButtonTimestamp() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('sliderButtonTimestamp', DateTime.now().toIso8601String());
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAttendanceDataForHomePage();
+    loadButtonState();
+    loadSliderButtonTimestamp(); // Load the slider button timestamp when the widget initializes
+    dataRefreshTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      _fetchAttendanceDataForHomePage();
+    });
+  }
 
   @override
   void dispose() {
+    dataRefreshTimer?.cancel();
     slideTimer?.cancel();
+    saveButtonState();
+    saveSliderButtonTimestamp(); // Save the slider button timestamp when the widget is disposed
     super.dispose();
   }
+
 
   void _fetchAttendanceDataForHomePage() async {
     final mobile = widget.mobileNumber;
     try {
-
       final data = await ApiService.fetchAttendanceByMobile(mobile);
-      if (data != null) {
+      if (data != null && data.isNotEmpty) {
         setState(() {
           attendanceData = data;
           // Filter the attendanceData list to include only records for the current date
-          DateTime currentDate = DateTime.now();
-          attendanceData = attendanceData.where((record) {
-            DateTime recordDate = DateTime.parse(record.date);
-            return recordDate.year == currentDate.year &&
-                recordDate.month == currentDate.month &&
-                recordDate.day == currentDate.day;
-          }).toList();
+          String currentDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+          attendanceData = attendanceData.where((record) => record.date == currentDate).toList();
+
+          // Now, assuming the data is sorted by date/time in descending order,
+          // you can get the latest entry for today.
+          if (attendanceData.isNotEmpty) {
+            final latestRecord = attendanceData[0];
+            String intime = latestRecord.intime;
+            String outtime = latestRecord.outtime ?? "";
+
+            // Parse the date-time strings without the 'T' character
+            checkInDateTime = DateTime.parse(currentDate + ' ' + intime);
+            if (outtime.isNotEmpty) {
+              checkOutDateTime = DateTime.parse(currentDate + ' ' + outtime);
+            } else {
+              checkOutDateTime = null;
+            }
+            // Update the button state based on checkOutDateTime
+            setState(() {
+              isCheckingIn = checkOutDateTime == null;
+            });
+
+            // Save the button state when the data is fetched
+            saveButtonState();
+          }
         });
       } else {
-        // Handle the case where the API response is null
         print('API response is null');
       }
     } catch (e) {
@@ -87,32 +158,14 @@ class _HomescreenState extends State<Homescreen> {
     }
   }
 
-  Future<void> saveCheckInStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isCheckedIn', true);
-    prefs.setInt('checkInTimestamp', DateTime.now().millisecondsSinceEpoch);
+
+  String _formatDateTime(DateTime? dateTime) {
+    if (dateTime != null) {
+      return DateFormat('hh:mm').format(dateTime);
+    } else {
+      return "--/--";
+    }
   }
-
-  Future<void> saveCheckOutStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setBool('isCheckedIn', false);
-    prefs.setInt('checkOutTimestamp', DateTime.now().millisecondsSinceEpoch);
-  }
-
-  Future<void> retrieveCheckInOutStatus() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final bool isCheckedIn = prefs.getBool('isCheckedIn') ?? false;
-    final int checkInTimestamp = prefs.getInt('checkInTimestamp') ?? 0;
-    final int checkOutTimestamp = prefs.getInt('checkOutTimestamp') ?? 0;
-
-    setState(() {
-      // Update your UI based on the retrieved values
-      isCheckingIn = isCheckedIn;
-      // You can also calculate if the check-in/out is still valid based on timestamps.
-      // For example, you can compare the timestamps to the current time and decide if it's within 24 hours.
-    });
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -201,7 +254,10 @@ class _HomescreenState extends State<Homescreen> {
                             color: Colors.black54
                           ),),
 
-                          Text((widget.checkInTime ?? "--/--"),
+                          Text(
+                            _formatDateTime(checkInDateTime), // Format and display Check In time
+
+                            // (widget.checkInTime ?? "--/--"),
                             style: TextStyle(
                                 fontFamily: "NexaBoald",
                                 fontSize: screenWidth / 18,
@@ -225,7 +281,9 @@ class _HomescreenState extends State<Homescreen> {
                         ),
                           ),
                           Text(
-                            widget.checkOutTime ?? "--/--",
+                            _formatDateTime(checkOutDateTime), // Format and display Check Out time
+
+                            // widget.checkOutTime ?? "--/--",
                             style: TextStyle(
                               fontFamily: "NexaBoald",
                               fontSize: screenWidth / 18,
@@ -308,7 +366,7 @@ class _HomescreenState extends State<Homescreen> {
                       outerColor: Colors.white,
                       innerColor: primary,
                       key: key1,
-                      onSubmit: () {
+                      onSubmit: () async {
                         // handleSlideActionPress; // Call the function to handle SlideAction press
 
                         if (isCheckingIn) {
@@ -335,7 +393,9 @@ class _HomescreenState extends State<Homescreen> {
                             });
                             // Reset the SlideAction
                             key1.currentState!.reset();
-                             },
+                            // Save the button state when the user interacts with the button
+                            saveSliderButtonTimestamp();
+                            },
                         );
                         // // Wait for 1 second and then reset
                         // Future.delayed(const Duration(seconds: 5), () {
