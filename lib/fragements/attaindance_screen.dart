@@ -273,18 +273,3 @@ class _AttaindencescreenState extends State<Attaindencescreen> {
     );
   }
 }
-
-
-
-// Expanded(
-//   child: ListView.builder(
-//     itemCount: attendanceData.length,
-//     itemBuilder: (context, index) {
-//       final user = attendanceData.reversed.toList()[index];
-//       return ListTile(
-//         title: Text(user.date),
-//         subtitle: Text('In: ${user.intime}, Out: ${user.outtime ?? 'Not Available'}'),
-//       );
-//     },
-//   ),
-// ),

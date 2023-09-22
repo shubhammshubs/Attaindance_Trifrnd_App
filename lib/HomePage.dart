@@ -9,12 +9,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
-
 import 'User_Session/User.dart'as UserSession;
 import 'User_Session/User.dart';
 import 'User_Session/attendance.dart';
 import 'User_Session/display_attaindance.dart';
-import 'fragements/layoutProfile.dart';
 
 class HomePage extends StatefulWidget {
   final String mobileNumber;
@@ -52,9 +50,6 @@ class _HomePageState extends State<HomePage> {
     FontAwesomeIcons.user,
   ];
 
-
-
-
 // ------------------------------------- USer Profile API ---------------------------------
   Future<void> fetchUsers() async {
     setState(() {
@@ -68,7 +63,6 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       isLoading = false;
     });
-
     if (response.statusCode == 200) {
       List<dynamic> data = json.decode(response.body);
       List<User> userList = data.map((item) => UserSession.User(
@@ -80,7 +74,6 @@ class _HomePageState extends State<HomePage> {
         mobile: item['mobile'],
         departmentName: item['department_name'],
       )).toList();
-
       setState(() {
         users = userList;
         userInfo = users.firstWhere(
@@ -230,9 +223,11 @@ class _HomePageState extends State<HomePage> {
               checkInTime: intime, // Pass the check-in time
               checkOutTime: checkOutTime, // Pass the check-out time
               mobileNumber: widget.mobileNumber,
-
             ),
-            Profilescreen(userInfo: userInfo),
+
+            Profilescreen(userInfo: userInfo,
+              mobileNumber: widget.mobileNumber,
+        ),
           ],
         ),
         bottomNavigationBar: Container(

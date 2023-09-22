@@ -2,28 +2,21 @@
   import 'package:attaindance_user_aug/splash_screen.dart';
   import 'package:flutter/material.dart';
   import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+  import 'package:get/get_core/src/get_main.dart';
   import 'package:http/http.dart' as http;
   import 'package:month_year_picker/month_year_picker.dart';
   import 'package:shared_preferences/shared_preferences.dart';
   import 'package:get/get.dart';
 
   import 'HomePage.dart';
-  // import 'Home_page.dart';
 
   void main() {
     runApp(GetMaterialApp(
       home: LoginApp(),
       localizationsDelegates: const [
         MonthYearPickerLocalizations.delegate,
-        // Other localizations delegates as needed...
       ],
-
     ));
-
-        // LoginApp());
-
   }
 
   class LoginApp extends StatelessWidget {
@@ -32,27 +25,15 @@ import 'package:get/get_core/src/get_main.dart';
     Widget build(BuildContext context) {
 
       return MaterialApp(
-        title: 'Login App1',
+        title: 'Trifrnd Attendance',
         theme: ThemeData(
           primarySwatch: Colors.blue,
           hintColor: Colors.blue, // Set your desired accent color here
-          // Other theme properties...
         ),
-        // localizationsDelegates: const [
-        //   MonthYearPickerLocalizations.delegate,
-        //   // Other localizations delegates as needed...
-        // ],
         home:
         SplashScreen(),
-        // // LoginPage(),
-        // localizationsDelegates: const [
-        //   MonthYearPickerLocalizations.delegate
-        // ],
       );
-
     }
-
-
   }
 
   class LoginPage extends StatefulWidget {
@@ -65,11 +46,7 @@ import 'package:get/get_core/src/get_main.dart';
     TextEditingController _mobileController = TextEditingController();
     TextEditingController _passwordController = TextEditingController();
     bool _isPasswordVisible = false;
-
-    // var other = "Login Done";
     bool _isLoading = false;
-
-
 
 
     Future<void> _login() async {
@@ -104,22 +81,8 @@ import 'package:get/get_core/src/get_main.dart';
           // Login successful, you can navigate to the next screen
           print("Login successful");
           final user = json.decode(response.body)[0];
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => SplashScreen(mobileNumber: _mobileController.text,
-          //   ),
-          // ),
-          // );
-
-          // Store the mobileNumber in shared preferences
-          // var sharedPref = await SharedPreferences.getInstance();
-          // sharedPref.setString("mobileNumber", _mobileController.text);
-          // sharedPref.setBool(SplashScreenState.KEYLOGIN, true);
-
           final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           sharedPreferences.setString('mobile', _mobileController.text);
-          // Get.to(HomePage(mobileNumber:  _mobileController.text,));
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => HomePage(mobileNumber: _mobileController.text,)),
@@ -145,10 +108,7 @@ import 'package:get/get_core/src/get_main.dart';
     @override
     Widget build(BuildContext context) {
       return Scaffold(
-        // appBar: AppBar(
-        //   centerTitle: true,
-        //   title: Text('Login 1'),
-        // ),
+
         body: Center(
           child: Padding(
             padding: EdgeInsets.all(16.0),
@@ -158,19 +118,6 @@ import 'package:get/get_core/src/get_main.dart';
                 children: [
                   // SizedBox(height: 1,),
                   Container(
-                    // height: 250, // Fixed height for the cover page
-                    // decoration: BoxDecoration(
-                    //   color: Colors.white,
-                    //   boxShadow: [
-                    //     BoxShadow(
-                    //       color: Colors.black26,
-                    //       blurRadius: 20,
-                    //       offset: Offset(2, 2),
-                    //     )
-                    //   ],
-                    //   borderRadius: BorderRadius.all(Radius.circular(20)),
-                    //
-                    // ),
                     child: Image.asset(
                       'assets/images/jpg_logo_crop.jpg',
                       fit: BoxFit.fitHeight,
@@ -179,13 +126,9 @@ import 'package:get/get_core/src/get_main.dart';
                   ),
                   TextField(
                     controller: _mobileController,
-
                     decoration: InputDecoration(labelText: 'Mobile Number',
-
                         prefixIcon: Icon(Icons.mobile_friendly_sharp)),
-
                     keyboardType: TextInputType.phone,
-
                   ),
                   SizedBox(height: 16),
                   TextField(
@@ -213,7 +156,6 @@ import 'package:get/get_core/src/get_main.dart';
                       ),
                     ),
                     child: _isLoading
-
                         ? CircularProgressIndicator()  // Show loading indicator
                         : Row(
                       mainAxisSize: MainAxisSize.min,
@@ -221,12 +163,9 @@ import 'package:get/get_core/src/get_main.dart';
                         Icon(Icons.login),
                         SizedBox(width: 8),
                         Text('Login'),
-
-
                       ],
                     ),
                   )
-
                 ],
               ),
             ),

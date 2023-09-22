@@ -64,11 +64,10 @@ dev_dependencies:
 # The following section is specific to Flutter packages.
 flutter:
   assets:
-    - assets/images/CoverPage.jpg
     - assets/images/
     - assets/images/cover1.jpg
-    - assets/images/black_cover.jpg
     - assets/images/jpg_logo.jpg
+
 
 
   # The following line ensures that the Material Icons font is

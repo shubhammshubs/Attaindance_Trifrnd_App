@@ -8,7 +8,9 @@ class User {
   final String email;
   final String mobile;
   final String departmentName;
+
   AttendanceData? attendanceData; // Add attendance data field
+
 
 
   User({

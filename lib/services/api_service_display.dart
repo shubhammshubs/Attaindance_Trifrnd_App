@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import '../User_Session/display_attaindance.dart';
 
 class ApiService {
-  // static final String baseUrl = 'https://api.trifrnd.com/portal/attend.php';
 
   static Future<List<display_attaindance>> fetchAttendanceByMobile(String mobile) async {
     final response = await http.post(

@@ -6,12 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:slide_to_act/slide_to_act.dart';
+import 'package:http/http.dart' as http;
+
 
 
 class Profilescreen extends StatefulWidget {
   final User? userInfo; // Add this line
+  final String mobileNumber;
 
-  const Profilescreen({Key? key, this.userInfo}) : super(key: key); // Update the constructor
+  const Profilescreen({Key? key, this.userInfo,
+    required this.mobileNumber,
+
+  }) : super(key: key); // Update the constructor
 
   @override
   State<Profilescreen> createState() => _Profilescreen();
@@ -23,6 +29,38 @@ class _Profilescreen extends State<Profilescreen> {
   double screenWidth = 0;
   Color primary = const Color(0xffeef444c);
 
+  String apiUrl = "https://api.trifrnd.com/portal/attend.php?apicall=readphoto";
+  String imageBaseUrl = "https://portal.trifrnd.com";
+
+  String? imageUrl;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchAndDisplayImage(widget.mobileNumber);
+  }
+
+  Future<void> fetchAndDisplayImage(String mobile) async {
+    try {
+      final response = await http.post(
+        Uri.parse(apiUrl),
+        body: {"mobile": mobile},
+      );
+      if (response.statusCode == 200) {
+        final imageName = response.body.replaceAll('"..', '').replaceAll('///', '//').replaceAll('"', '');
+        setState(() {
+          imageUrl = "$imageBaseUrl$imageName";
+        });
+      } else {
+        // Handle the case when the API call fails or returns an error
+        imageUrl = null;
+      }
+    } catch (error) {
+      print("Error fetching photo data: $error");
+      // Handle the case when an error occurs during the API call
+      imageUrl = null;
+    }
+  }
 
 
   @override
@@ -49,21 +87,41 @@ class _Profilescreen extends State<Profilescreen> {
 
             ),
             child: Image.asset(
-              'assets/images/cover1.jpg',
+               // "${widget.userInfo!.mobile}",
+
+                'assets/images/cover1.jpg',
               fit: BoxFit.cover,
             ),
           ),
 
           // -------------------------This is code for Profile Photo circle--------------------------------
           Container(
-            margin: const EdgeInsets.only(top: 132,right: 1,left: 200),
-
-            child: const CircleAvatar(
-              backgroundImage: AssetImage('assets/images/CoverPage.jpg'),
-              backgroundColor: Colors.greenAccent,
-              radius: 60,
-
+            margin: const EdgeInsets.only(top: 125, right: 1, left: 250),
+            child: Column(
+              children: <Widget>[
+                if (imageUrl != null)
+                  Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.white, // Set the border color here
+                        width: 2, // Set the border width here
+                      ),
+                    ),
+                    child: ClipOval(
+                      child: Image.network(
+                        imageUrl!,
+                        width: 120, // Adjust the size as needed
+                        height: 120,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  )
+                else
+                  Text('Image not found'),
+              ],
             ),
+
           ),
 
 
@@ -74,6 +132,8 @@ class _Profilescreen extends State<Profilescreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
+
+
 
                   // -----------------------Code for COver Page End --------------------------
                   // Code for Profile Page
@@ -142,8 +202,8 @@ class _Profilescreen extends State<Profilescreen> {
                                           mainAxisAlignment: MainAxisAlignment.center,
                                           crossAxisAlignment: CrossAxisAlignment.center,
                                           children: [
-
                                             SizedBox(width: 8), // Add some spacing between the icon and text
+
                                             RichText(text: TextSpan(
 
                                                 text: "${widget.userInfo!.fname} ${widget.userInfo!.lname}",
@@ -163,10 +223,9 @@ class _Profilescreen extends State<Profilescreen> {
                                               Icons.person, // You can use any desired icon from the Icons class
                                               color: primary,
                                               size: screenWidth / 20,
-
                                             ),
                                             SizedBox(width: 4), // Add some spacing between the icon and text
-                                            Text(" Employee ID: ${widget.userInfo!.empId}",
+                                            Text(" ${widget.userInfo!.empId}",
                                               style: TextStyle(
                                                   fontFamily: "NexaRegular",
                                                   fontSize: screenWidth / 20,
@@ -175,6 +234,8 @@ class _Profilescreen extends State<Profilescreen> {
                                             ),
                                           ],
                                         ),
+                                        SizedBox(height: 10,),
+
                                         Row(
                                           children: [
                                             SizedBox(width: 1), // Add some spacing between the icon and text
@@ -186,7 +247,7 @@ class _Profilescreen extends State<Profilescreen> {
                                             SizedBox(width: 4), // Add some spacing between the icon and text
 
                                             Flexible(
-                                              child: Text(" Email: ${widget.userInfo!.email}",
+                                              child: Text(" ${widget.userInfo!.email}",
                                                 style: TextStyle(
                                                     fontFamily: "NexaRegular",
                                                     fontSize: screenWidth / 20,
@@ -196,6 +257,8 @@ class _Profilescreen extends State<Profilescreen> {
                                             ),
                                           ],
                                         ),
+                                        SizedBox(height: 10,),
+
                                         Row(
                                           children: [
                                             SizedBox(width: 1), // Add some spacing between the icon and text
@@ -206,7 +269,7 @@ class _Profilescreen extends State<Profilescreen> {
                                               size: screenWidth / 20,
                                             ),
                                             SizedBox(width: 4), // Add some spacing between the icon and text
-                                            Text(" Mobile: ${widget.userInfo!.mobile}",
+                                            Text(" ${widget.userInfo!.mobile}",
                                               style: TextStyle(
                                                   fontFamily: "NexaRegular",
                                                   fontSize: screenWidth / 20,
@@ -215,24 +278,26 @@ class _Profilescreen extends State<Profilescreen> {
                                             ),
                                           ],
                                         ),
-                                        Row(
-                                          children: [
-                                            SizedBox(width: 2), // Add some spacing between the icon and text
-                                            Icon(
-                                              Icons.important_devices, // You can use any desired icon from the Icons class
-                                              color: primary,
-                                              size: screenWidth / 20,
-                                            ),
-                                            SizedBox(width: 3), // Add some spacing between the icon and text
-                                            Text(" Department: ${widget.userInfo!.departmentName}",
-                                              style: TextStyle(
-                                                  fontFamily: "NexaRegular",
-                                                  fontSize: screenWidth / 20,
-                                                  color: Colors.black54
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                        SizedBox(height: 10,),
+
+                                        // Row(
+                                        //   children: [
+                                        //     SizedBox(width: 2), // Add some spacing between the icon and text
+                                        //     Icon(
+                                        //       Icons.important_devices, // You can use any desired icon from the Icons class
+                                        //       color: primary,
+                                        //       size: screenWidth / 20,
+                                        //     ),
+                                        //     SizedBox(width: 3), // Add some spacing between the icon and text
+                                        //     Text(" Department: ${widget.userInfo!.departmentName}",
+                                        //       style: TextStyle(
+                                        //           fontFamily: "NexaRegular",
+                                        //           fontSize: screenWidth / 20,
+                                        //           color: Colors.black54
+                                        //       ),
+                                        //     ),
+                                        //   ],
+                                        // ),
                                       ],
                                     ),
                                   ),

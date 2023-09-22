@@ -8,12 +8,11 @@ class AttendanceData {
     required this.intime,
     required this.outtime,
   });
-
-//   factory AttendanceData.fromJson(Map<String, dynamic> json) {
-//     return AttendanceData(
-//       date: json['date'],
-//       intime: json['intime'],
-//       outtime: json['outtime'],
-//     );
-//   }
+  factory AttendanceData.fromJson(Map<String, dynamic> json) {
+    return AttendanceData(
+      date: json['date'],
+      intime: json['intime'],
+      outtime: json['outtime'],
+    );
+  }
 }
